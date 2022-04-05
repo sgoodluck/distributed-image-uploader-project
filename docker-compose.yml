@@ -1,19 +1,37 @@
 version: "3"
 
 services:
-  app:
+  db:
+    env_file: .env
+    image: postgres:14.2-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+
+  server:
+    env_file: .env
     build:
       context: app
     ports:
       - "5000"
+    volumes:
+      - photos:/var/lib/uploads
     deploy:
       replicas: 3
+    depends_on:
+      - db
 
-  nginx:
+  proxy:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - "80:80"
     depends_on:
-      - app
+      - server
+
+volumes:
+  data:
+  photos:

@@ -61,6 +61,8 @@ Congratulations - we have a scaling application!
 
 ## Status
 
+**16:15** Had some issues with my nginx config. But we now have our server scaling! So now it is time flesh out the actual upload endpoint. We will be creating a shared volume for our docker setup and storing files there.
+
 **15:30** Time to review my notes and start programming! I know I'm going to be using docker volumes to hold data and the database, so I'll start with a simple scalable framework before implementing the actual upload because docker volumes can be tricky sometimes.
 
 **14:05** I started working on this assignment a bit after noon. I have decided on the architecture and configuration for the app bearing in mind the assumptions provided. I also drafted up this markdown file for my own notes and to guide a reviewer. I feel comfortable with the design and will proceed to implement after a walk and some lunch.
