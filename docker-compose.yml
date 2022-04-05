@@ -10,7 +10,7 @@ services:
     volumes:
       - data:/var/lib/postgresql/data
 
-  server:
+  app:
     env_file: .env
     build:
       context: app
@@ -30,7 +30,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - server
+      - app
 
 volumes:
   data
