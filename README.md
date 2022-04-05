@@ -45,11 +45,19 @@ The application consists of an NGINX load balancer handling several docker conta
 
 ### Instructions for me
 
+Prerequisites: python3, docker, docker-compose, nginx
+
 1. Spin up a virtual environment: `python3 -m venv venv`
 2. Activate it in the root directory: `. venv/bin/activate`
 3. Install flask: `pip install Flask`
-4. Set environment variables: `export FLASK_APP=app.py` and `export FLASK_ENV=development`
-5. Run the server: `flask run`
+4. Install gunicorn: `pip install gunicorn`
+5. To run just the flask server:
+   1. Set environment variables: `export FLASK_APP=app.py` and `export FLASK_ENV=development`
+   2. Run the server explicitly: `flask run`
+6. To run the docker setup: `docker-compose up -d --build` 
+7. To inspect docker: `docker ps`
+
+Congratulations - we have a scaling application!
 
 ## Status
 
