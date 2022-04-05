@@ -21,6 +21,7 @@
 - [Bowery Farming - Coding Assignment](#bowery-farming---coding-assignment)
   - [Table of contents](#table-of-contents)
   - [Quick start](#quick-start)
+    - [Instructions for me](#instructions-for-me)
   - [Status](#status)
   - [Technologies used](#technologies-used)
   - [What's included](#whats-included)
@@ -42,9 +43,17 @@ The application consists of an NGINX load balancer handling several docker conta
 - Instruction 2
 - Instruction 3
 
+### Instructions for me
+
+1. Spin up a virtual environment: `python3 -m venv venv`
+2. Activate it in the root directory: `. venv/bin/activate`
+3. Install flask: `pip install Flask`
+4. Set environment variables: `export FLASK_APP=app.py` and `export FLASK_ENV=development`
+5. Run the server: `flask run`
+
 ## Status
 
-**14:45** Time to review my notes and start programming!
+**15:30** Time to review my notes and start programming! I know I'm going to be using docker volumes to hold data and the database, so I'll start with a simple scalable framework before implementing the actual upload because docker volumes can be tricky sometimes.
 
 **14:05** I started working on this assignment a bit after noon. I have decided on the architecture and configuration for the app bearing in mind the assumptions provided. I also drafted up this markdown file for my own notes and to guide a reviewer. I feel comfortable with the design and will proceed to implement after a walk and some lunch.
 
