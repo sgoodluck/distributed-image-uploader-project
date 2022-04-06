@@ -41,12 +41,7 @@ def upload_file():
         filename = secure_filename(file.filename)
         upload_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(upload_path)
-
-        logging.debug("File Upload Successful - listing all files")
-        for filename in os.listdir(app.config['UPLOAD_FOLDER']):
-            logging.debug(filename)
-
-        response = {'message': f'The file {filename} was uploaded'}
+        response = {'message': f"The file: {filename} was successfully uploaded"} 
         return make_response(response, 201)
 
 if __name__ == "__main__":
