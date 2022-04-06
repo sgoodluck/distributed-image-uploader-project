@@ -1,6 +1,6 @@
-import os, socket
+import os, logging
 
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, make_response, request, redirect
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = '/var/lib/uploads'
@@ -15,45 +15,39 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# # Setup Home/Heartbeat Route TODO: Delete me before upload
-# @app.route("/", methods=["GET"])
-# def home():
-#     return f"The server is alive! Container ID: {socket.gethostname()}"
-
-@app.route("/", methods=["GET", "POST"])
+@app.route("/list", methods=["GET"])
+def list_uploads():
+    uploads = os.listdir(app.config['UPLOAD_FOLDER'])
+    
+    return {"all_files": uploads}
+    
+@app.route("/", methods=["POST"])
 def upload_file():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            upload_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(upload_path)
-            
-            dirs = os.listdir(app.config['UPLOAD_FOLDER'])
+    if 'file' not in request.files:
+        response = {'message': 'You must upload a file'}
+        return make_response(response, 400)
 
-            print(upload_path)
-            for file in dirs:
-                print(file, flush=True)
+    file = request.files['file']
+   
+    if file.filename == '':
+        response = {'message': 'Your filename must not be empty and be a proper filename'}
+        return make_response(response, 400)
 
-            return redirect("/")
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
+    if not allowed_file(file.filename):
+        response = {'message': f"You may only upload files with the following types: {', '.join(ALLOWED_EXTENSIONS)}"}
+        return make_response(response, 400)
+
+    if file:
+        filename = secure_filename(file.filename)
+        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(upload_path)
+
+        logging.debug("File Upload Successful - listing all files")
+        for filename in os.listdir(app.config['UPLOAD_FOLDER']):
+            logging.debug(filename)
+
+        response = {'message': f'The file {filename} was uploaded'}
+        return make_response(response, 201)
 
 if __name__ == "__main__":
     app.run(debug=True)

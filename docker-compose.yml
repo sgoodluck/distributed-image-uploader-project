@@ -33,5 +33,5 @@ services:
       - app
 
 volumes:
-  data
-  photos
+  data:
+  photos:

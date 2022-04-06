@@ -1,5 +1,6 @@
 # Bowery Farming - Coding Assignment
 
+## About
 <!-- markdownlint-disable MD033-->
 <p align="center">
   <a href="https://boweryfarming.com/">
@@ -19,6 +20,7 @@
 ## Table of contents
 
 - [Bowery Farming - Coding Assignment](#bowery-farming---coding-assignment)
+  - [About](#about)
   - [Table of contents](#table-of-contents)
   - [Quick start](#quick-start)
     - [Instructions for me](#instructions-for-me)
@@ -71,6 +73,8 @@ Now if we use `dm-disk ls -l /docker/var/lib/docker/volumes/` we will be able to
 That will actually show us the list of photos in the persisted shared docker volume. Uploading to S3 won't be an issue as we would have another docker container that has direct volume access to invoke the lambda functions.
 
 ## Status
+
+**19:30** Back to coding
 
 **19:02** Ok so we have successfully setup our docker-compose to spin up an nginx load balancer, 3 server instances, and can persist our photo data in a shared docker volume. We are pretty close. Next up, updating some instructions for use and demonstration and the endpoint to accept JSON instead of using a webform. Then we are pretty much there.
 
