@@ -37,9 +37,15 @@
 
 ## Quick start
 
-Pre-requisites: You must have docker and docker-compose installed on your device.
+Pre-requisites: You must have docker and docker-compose installed on your device. 
 
 The application consists of an NGINX load balancer handling several docker containers for the API. After downloading this, you can start the service with the following commands from the root directory.
+
+1. Make a copy of the env file: `cp sample.env .env`
+2. Run the docker compose: `docker-compose up` which will download all dependencies
+   1. Expect a lag after it says the database is up as the system is waiting for the database to be ready before other containers start
+3. You can see all available files with `GET localhost/list` 
+4. You can upload files with `POST localhost/` using POSTMAN, CURL, or another method 
 
 - Stopping: `docker-compose down`
 - Starting: `docker-compose up --build`
