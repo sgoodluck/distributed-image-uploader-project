@@ -1,6 +1,5 @@
 # Bowery Farming - Coding Assignment
 
-## About
 <!-- markdownlint-disable MD033-->
 <p align="center">
   <a href="https://boweryfarming.com/">
@@ -20,12 +19,10 @@
 ## Table of contents
 
 - [Bowery Farming - Coding Assignment](#bowery-farming---coding-assignment)
-  - [About](#about)
   - [Table of contents](#table-of-contents)
   - [Quick start](#quick-start)
-    - [Instructions for me](#instructions-for-me)
   - [Helpful Commands](#helpful-commands)
-  - [Status](#status)
+  - [Summary of Solution](#summary-of-solution)
   - [Technologies used](#technologies-used)
   - [What's included](#whats-included)
   - [Requirements & Constraints](#requirements--constraints)
@@ -40,25 +37,15 @@
 
 ## Quick start
 
-The application consists of an NGINX load balancer handling several docker containers for the API. After downloading this, you can start the service with the following commands.
+Pre-requisites: You must have docker and docker-compose installed on your device.
 
-- Instruction 1
-- Instruction 2
-- Instruction 3
+The application consists of an NGINX load balancer handling several docker containers for the API. After downloading this, you can start the service with the following commands from the root directory.
 
-### Instructions for me
+- Stopping: `docker-compose down`
+- Starting: `docker-compose up --build`
+- Cleaning: `docker system prune && docker volume prune`
 
-Prerequisites: python3, docker, docker-compose, nginx
-
-1. Spin up a virtual environment: `python3 -m venv venv`
-2. Activate it in the root directory: `. venv/bin/activate`
-3. Install flask: `pip install Flask`
-4. Install gunicorn: `pip install gunicorn`
-5. To run just the flask server:
-   1. Set environment variables: `export FLASK_APP=app.py` and `export FLASK_ENV=development`
-   2. Run the server explicitly: `flask run`
-6. To run the docker setup: `docker-compose up -d --build` 
-7. To inspect docker instances: `docker ps`
+There is a convenience endpoint: `localhost/list` to easily inspect uploaded photos as docker volumes can be tedious to inspect manually.
 
 ## Helpful Commands
 
@@ -72,21 +59,14 @@ Now if we use `dm-disk ls -l /docker/var/lib/docker/volumes/` we will be able to
 
 That will actually show us the list of photos in the persisted shared docker volume. Uploading to S3 won't be an issue as we would have another docker container that has direct volume access to invoke the lambda functions.
 
-## Status
+## Summary of Solution
 
-**19:30** Back to coding
+The solution takes the following shape:
 
-**19:02** Ok so we have successfully setup our docker-compose to spin up an nginx load balancer, 3 server instances, and can persist our photo data in a shared docker volume. We are pretty close. Next up, updating some instructions for use and demonstration and the endpoint to accept JSON instead of using a webform. Then we are pretty much there.
+![System Diagram](SystemDiagram.svg)
 
-**17:34** Back to coding!
-
-**16:30** Have another call - back soon
-
-**16:15** Had some issues with my nginx config. But we now have our server scaling! So now it is time flesh out the actual upload endpoint. We will be creating a shared volume for our docker setup and storing files there.
-
-**15:30** Time to review my notes and start programming! I know I'm going to be using docker volumes to hold data and the database, so I'll start with a simple scalable framework before implementing the actual upload because docker volumes can be tricky sometimes.
-
-**14:05** I started working on this assignment a bit after noon. I have decided on the architecture and configuration for the app bearing in mind the assumptions provided. I also drafted up this markdown file for my own notes and to guide a reviewer. I feel comfortable with the design and will proceed to implement after a walk and some lunch.
+There is an NGINX load balancer that routes uploads to a server cluster. 
+These store photo binaries on a shared docker volume and writes to SQL table (stored on another docker volume) the file location, file name, and status for queuing.
 
 ## Technologies used
 
@@ -101,14 +81,18 @@ That will actually show us the list of photos in the persisted shared docker vol
 The app directory is as follows
 
 ```text
-folder1/
-└── folder2/
-    ├── folder3/
-    │   ├── file1
-    │   └── file2
-    └── folder4/
-        ├── file3
-        └── file4
+app/
+└── app.py
+└── Dockerfile
+└── requirements.txt
+.dockerignore
+.gitignore
+.env
+docker-compose.yml
+nginx.conf
+README.md
+sample.env
+SystemDiagram.svg
 ```
 
 ## Requirements & Constraints
@@ -166,14 +150,20 @@ In short the system algorithm will work as follows:
 
 ## Discussions
 
-1. How do you think about uploading to S3 and the local queuing process?
-2. How do we handle variable network speed, file size, and bandwidth resource allocation?
-3. How should we observe and monitor the system?
-4. How are we going to maintain system stability after completion?
+1. **How do you think about uploading to S3 and the local queuing process?**
+   1. I think it makes sense to store the files locally and utilize a database to act as a queue controller. This would allow us to see which photos have been uploaded, which ones haven't, and catch failed jobs after too much time has elapsed.
+2. **How do we handle variable network speed, file size, and bandwidth resource allocation?**
+   1. Variations are inevitable. Distributing the load will help with variable LAN speeds. As for photos we can restrict the max photo size and make sure our IoT devices are behaving within spec. As far as bandwidth resources, building in "padding" on all parts seems to be the most prudent approach
+3. **How should we observe and monitor the system?**
+   1. Some kind of health check system would be prudent. The NGINX container can monitor the upload servers themselves, but it would be good to also send some kind of heartbeat to another monitoring service to make sure the system is up and running. Logs can also be kept to analyze errors in local or remote uploads.
+4. **How are we going to maintain system stability after completion?**
+   1. Using containerization is a step in that direction as it allows for easy scaling and portability. The code should be well-formatted, commented, and pretty simple. Additionally, utilizing health checks and being able to automatically restart the system when things go down would be a good system to implement.
 
 ## Thanks
 
-This was a fun assignment! I particularly enjoy working on problems that have these real-world constraints and somewhat nebulous requirements. 
+This was a very fun assignment! I particularly enjoy working on problems that have these real-world constraints and somewhat nebulous requirements.
+
+Overall, this process took me a bit under 5 hours (including diagrams, readmes, research, etc). The actual endpoint was easy and I thought it would be fun to implement containerization and a database to simulate what this might look like in the real world.
 
 I'm absolutely open to feedback and understand that I may have missed some important considerations in this submission.
 

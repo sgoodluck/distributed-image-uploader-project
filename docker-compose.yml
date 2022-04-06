@@ -8,7 +8,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U postgres
 
   app:
     env_file: .env
@@ -21,7 +23,8 @@ services:
     deploy:
       replicas: 3
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   proxy:
     image: nginx:latest
@@ -33,5 +36,6 @@ services:
       - app
 
 volumes:
-  data:
-  photos:
+  pgdata: {}
+  photos: {}
+  
