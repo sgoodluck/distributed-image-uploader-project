@@ -163,7 +163,7 @@ In short the system algorithm will work as follows:
 
 This was a very fun assignment! I particularly enjoy working on problems that have these real-world constraints and somewhat nebulous requirements.
 
-Overall, this process took me a bit under 5 hours (including diagrams, readmes, research, etc). The actual endpoint was easy and I thought it would be fun to implement containerization and a database to simulate what this might look like in the real world.
+Overall, this process took me a bit under 5 hours (including diagrams, readmes, research, etc). The actual endpoint was easy and done in about an hour so I thought it would be fun to implement containerization and a database to simulate what this might look like in the real world and spend some more time with it.
 
 I'm absolutely open to feedback and understand that I may have missed some important considerations in this submission.
 
