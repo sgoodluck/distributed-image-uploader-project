@@ -1,39 +1,3 @@
-# Bowery Farming - Coding Assignment
-
-<!-- markdownlint-disable MD033-->
-<p align="center">
-  <a href="https://boweryfarming.com/">
-    <img src="https://www.refrigeratedfrozenfood.com/ext/resources/RFF/Bowery-Farming/Bowery_Wordmark_Seedling_Vertical_RGB_MidnightForest.jpg?1595449917" alt="Logo" height=72>
-  </a>
-
-  <h3 align="center">On-Premise Photo Uploader App</h3>
-
-  <p align="center">
-    A local API server that allows for uploading of images for eventual S3 backup. This solution was prepared by the following applicant for the position of Sr. Software Engineer at Bowery Farming
-    <br>
-    <a href="https://www.linkedin.com/in/sgoodluck">• Seth Martin •</a>
-  </p>
-</p>
-<!-- markdownlint-enable MD033 -->
-
-## Table of contents
-
-- [Bowery Farming - Coding Assignment](#bowery-farming---coding-assignment)
-  - [Table of contents](#table-of-contents)
-  - [Quick start](#quick-start)
-  - [Helpful Commands](#helpful-commands)
-  - [Summary of Solution](#summary-of-solution)
-  - [Technologies used](#technologies-used)
-  - [What's included](#whats-included)
-  - [Requirements & Constraints](#requirements--constraints)
-    - [Assumptions](#assumptions)
-    - [Additional Considerations](#additional-considerations)
-  - [Design & Process](#design--process)
-    - [Process](#process)
-    - [Design](#design)
-  - [Discussions](#discussions)
-  - [Thanks](#thanks)
-  - [Copyright and license](#copyright-and-license)
 
 ## Quick start
 
@@ -103,7 +67,7 @@ SystemDiagram.svg
 
 ## Requirements & Constraints
 
-Bowery has over 1000 embedded devices each taking 2 photos every minute. To avoid network saturation, devices upload to a local API server which queues files locally to control S3 upload rate.
+XX Company has over 1000 embedded devices each taking 2 photos every minute. To avoid network saturation, devices upload to a local API server which queues files locally to control S3 upload rate.
 
 Using a programming language of your choice, build an API server that accepts image file uploads. **The api should have a single endpoint that receives a JSON payload and one key in that payload should be the image in binary format.** You may use any tools or libraries you see fit.
 
